@@ -1,0 +1,23 @@
+{
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "dart-sass": "^1.25.0",
+    "sass": "^1.35.2",
+    "sass-loader": "^12.1.0",
+    "vue": "^3.0.5",
+    "vue-router": "4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^1.2.4",
+    "@vue/compiler-sfc": "^3.0.5",
+    "vite": "^2.4.0",
+    "vite-plugin-windicss": "^1.2.4",
+    "vue-auto-routing": "^1.0.1",
+    "windicss": "^3.1.4"
+  }
+}
