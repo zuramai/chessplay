@@ -55,6 +55,23 @@ export default {
             'F2': 'pawn',
             'G2': 'pawn',
             'H2': 'pawn',
+
+            'A8': 'rook',
+            'B8': 'knight',
+            'C8': 'bishop',
+            'D8': 'queen',
+            'E8': 'king',
+            'F8': 'bishop',
+            'G8': 'knight',
+            'H8': 'rook',
+            'A7': 'pawn',
+            'B7': 'pawn',
+            'C7': 'pawn',
+            'D7': 'pawn',
+            'E7': 'pawn',
+            'F7': 'pawn',
+            'G7': 'pawn',
+            'H7': 'pawn',
         }        
         return contentMapping[squareCode]
     }
