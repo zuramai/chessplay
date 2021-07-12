@@ -37,6 +37,11 @@ export default {
         }
     },
 
+    /**
+     * Get chess piece mapped by square code.
+     * @param {String} squareCode 
+     * @returns {String} The chess piece name
+     */
     getSquareContent(squareCode) {
         let contentMapping = {
             'A1': 'rook',
