@@ -13,7 +13,7 @@
             </g>
             </svg>
 
-            <h5 class='text-lg font-bold ml-1'><span class='text-[#6DA8D6]'>Chess</span>play</h5>
+            <h5 class='text-lg font-bold ml-1 text-[#7C83FD]'><span class='text-white'>Chess</span>play</h5>
         </router-link>
     </div>
 </template>

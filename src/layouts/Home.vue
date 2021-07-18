@@ -9,7 +9,7 @@ import Header from "@/components/layouts/Header.vue"
 </script>
 <style lang="scss">
 #home {
-    background-color: rgba(#deecff,.5);
+    background-color: #171010;
     min-height: 100vh;
 }
 </style>

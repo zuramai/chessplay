@@ -1,7 +1,6 @@
 <template>
-    <div class="game px-32">
+    <div class="game">
         <div class="chessboard | w-full max-h-0" >
-            <p class='text-lg text-center'><b>{{ turn }}</b> turn</p>
             <svg :viewBox="`0 0 ${viewbox.x} ${viewbox.y}`" ref="svg" @mousemove="onMouseMove">
                 <!-- Base Color -->
                 <rect x="0" y="0" :width="viewbox.x" :height="viewbox.y" :fill="boardSettings.baseColor"></rect>
@@ -50,13 +49,23 @@
     </div>
 </template>
 <script setup>
-import { onMounted, reactive, ref, toRefs } from 'vue'
+import { computed, onMounted, reactive, ref, toRefs } from 'vue'
+import { useStore } from 'vuex'
 import helper from "./GameHelper"
 import Piece from "./Piece.vue"
 
+const store = useStore()
+
 const viewbox = {x: 1000, y: 1000}
 let playerColor = ref('white')
-let turn = ref('white')
+let turn = computed({
+    set(val) {
+        return store.commit("CHANGE_TURN", val)
+    },
+    get() {
+        return store.state.turn
+    } 
+})
 let turnNumber = ref(1)
 let squares = reactive([]);
 let svg = ref(null)
@@ -203,7 +212,7 @@ function pawnPossibleMoves(squareRowIndex, squareColIndex) {
         i += square.content.color == 'white' ? -1 : 1
         
         nextSquare = squares[squareRowIndex+i][squareColIndex]
-        console.log('pawn possible moves', nextSquare)
+        // console.log('pawn possible moves', nextSquare)
         if(nextSquare.content.piece) break
         makeItPossible(nextSquare)
     }while(i !== stepForward)
@@ -338,18 +347,8 @@ function onMouseMove(e) {
     mouseLocation.y =  (e.clientY - rect.y) * viewbox.y / rect.height
 }
 
-/**
- * Call this function anywhere where you want to debug something
- */
-function debug() {
-    console.log(squares)
-}
-
-
-
 onMounted(() => {
     initSquares()
-    debug()
 })
 </script>
 <style lang="scss">

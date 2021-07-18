@@ -12,6 +12,6 @@ import Logo from "@/components/Logo/Logo.vue"
 </script>
 <style lang="postcss">
 .header {
-    background-color: white;
+    background-color: #2B2B2B;
 }
 </style>
