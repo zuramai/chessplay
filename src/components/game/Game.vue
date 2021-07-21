@@ -244,7 +244,48 @@ function pawnPossibleMoves(squareRowIndex, squareColIndex) {
  * @returns {void}
  */
 function rookPossibleMoves(squareRowIndex, squareColIndex) {
-    
+    let moveTargets = []
+    let directionMapping = {
+        top:    { row: "min" },
+        bottom: { row: "plus" },
+        left:   { col: "min" },
+        right:  { col: "plus" },
+    }
+
+    for(let directionName in directionMapping) {
+        let direction = directionMapping[directionName]
+        for(let i = 1; i <= 8; i++) {
+            let getOffset = (direction, value) => {
+                if(direction == 'row') return value == "min" ? -i : i;
+                else return value == "min" ? -i : i
+            }
+
+            let targetRow = !direction.row ? squareRowIndex : squareRowIndex + getOffset("row", direction.row)
+            let targetCol = !direction.col ? squareColIndex : squareColIndex + getOffset("col", direction.col)
+
+            if(targetRow < 0 || targetCol < 0 || targetRow > 7 || targetCol > 7) break
+            let currSquare = squares[targetRow][targetCol]
+
+            if(currSquare.content.color == turn.value) break;
+            else if(currSquare.content.color == oppositeTurn.value) {
+                moveTargets.push({rowIndex: targetRow, colIndex: targetCol})
+                break;
+            }else{
+                moveTargets.push({rowIndex: targetRow, colIndex: targetCol})
+            }
+        }
+    }
+
+    console.log("Bishop possible:",moveTargets)
+
+    moveTargets.forEach(target => {
+        let { rowIndex, colIndex } = target
+        let targetSquare = squares[rowIndex][colIndex]
+        console.log("target",targetSquare)
+
+        if(targetSquare.content.piece && targetSquare.content.color == turn.value) return
+        else makeItPossible(targetSquare)
+    })
 }
 
 /**
@@ -274,8 +315,6 @@ function queenPossibleMoves(squareRowIndex, squareColIndex) {
  * @returns {void}
  */
 function knightPossibleMoves(squareRowIndex, squareColIndex) {
-    let square = squares[squareRowIndex][squareColIndex]
-
     let moveTargets = helper.getKnightPossibleMoves(squareRowIndex, squareColIndex)
 
     moveTargets.forEach(target => {
@@ -306,7 +345,7 @@ function bishopPossibleMoves(squareRowIndex, squareColIndex) {
         bottomright: { row: "plus", col: "plus" },
     }
     
-    // Check diagonally to topleft
+    // Check diagonally for every direction
     for(let directionName in directionMapping) {
         let direction = directionMapping[directionName]
         for(let i = 1; i <= 8; i++) {
@@ -318,7 +357,6 @@ function bishopPossibleMoves(squareRowIndex, squareColIndex) {
 
             if(currSquare.content.color == turn.value) break;
             else if(currSquare.content.color == oppositeTurn.value) {
-                console.log("kena warna lawan ", currSquare)
                 moveTargets.push({rowIndex: targetRow, colIndex: targetCol})
                 break;
             }else{
@@ -379,14 +417,13 @@ function squareMouseLeave($event, square) {
     if(!isHoldingChessPiece.value) clearPossibleMoves()
 }
 
-
-
 /**
  * Hold a chess piece to a square
  */
 function holdPiece($event,square) {
     if(!square.content.piece  ||
-        square.content.color !== turn.value) return
+        square.content.color !== turn.value ||
+        possibleMoves.length == 0) return
     isHoldingChessPiece.value = square
     square.visible = false
 }
