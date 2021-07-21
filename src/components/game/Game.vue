@@ -305,7 +305,8 @@ function kingPossibleMoves(squareRowIndex, squareColIndex) {
  * @returns {void}
  */
 function queenPossibleMoves(squareRowIndex, squareColIndex) {
-    
+    bishopPossibleMoves(squareRowIndex, squareColIndex)
+    rookPossibleMoves(squareRowIndex, squareColIndex)
 }
 
 /**
