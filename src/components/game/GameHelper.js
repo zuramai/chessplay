@@ -101,5 +101,26 @@ export default {
         ]
     },
 
+    /**
+     * Get king possible moves mapping array 
+     * @param {Number} squareRowIndex The current row index number
+     * @param {Number} squareColIndex The current col index number
+     * @returns {Array}
+     */
+    getKingPossibleMoves(squareRowIndex, squareColIndex) {
+        return [
+            {targetRow: squareRowIndex+1, targetCol: squareColIndex},
+            {targetRow: squareRowIndex-1, targetCol: squareColIndex},
+            {targetRow: squareRowIndex, targetCol: squareColIndex+1},
+            {targetRow: squareRowIndex, targetCol: squareColIndex-1},
+            
+            // diagonal
+            {targetRow: squareRowIndex+1, targetCol: squareColIndex+1},
+            {targetRow: squareRowIndex+1, targetCol: squareColIndex-1},
+            {targetRow: squareRowIndex-1, targetCol: squareColIndex+1},
+            {targetRow: squareRowIndex-1, targetCol: squareColIndex-1},
+        ]
+    }
+
   
 }

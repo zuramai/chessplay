@@ -276,12 +276,9 @@ function rookPossibleMoves(squareRowIndex, squareColIndex) {
         }
     }
 
-    console.log("Bishop possible:",moveTargets)
-
     moveTargets.forEach(target => {
         let { rowIndex, colIndex } = target
         let targetSquare = squares[rowIndex][colIndex]
-        console.log("target",targetSquare)
 
         if(targetSquare.content.piece && targetSquare.content.color == turn.value) return
         else makeItPossible(targetSquare)
@@ -295,7 +292,19 @@ function rookPossibleMoves(squareRowIndex, squareColIndex) {
  * @returns {void}
  */
 function kingPossibleMoves(squareRowIndex, squareColIndex) {
-    
+    let possibleMovesIndex = helper.getKingPossibleMoves(squareRowIndex,squareColIndex)
+
+    possibleMovesIndex.forEach(possible => {
+        let { targetRow, targetCol } = possible
+
+        if(targetRow < 0 || targetCol < 0 || targetRow > 7 || targetCol > 7) return
+
+        let square = squares[targetRow][targetCol]
+
+        if(square.content.color == turn.value) return
+        else if(!square.content.color || square.content.color == oppositeTurn.value) makeItPossible(square)
+        
+    })
 }
 
 /**
