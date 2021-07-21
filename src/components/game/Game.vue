@@ -155,17 +155,49 @@ function squareClick($event, rowIndex, colIndex) {
     console.log(isHoldingChessPiece.value)
 }
 
+function playAgain() {
+    initSquares()
+    turn.value = "white"
+    store.commit("RESET_MOVES_HISTORY")
+}
+
+function isCheckmate(squareTo) {
+    const isKingEaten = () => squareTo.content.piece == 'king' ? (squareTo.content.color == 'white' ? 'black' : 'white') : null
+
+    let winner = null
+    
+    if(winner = isKingEaten()) {
+        alert(`${winner} win!`)
+    }
+
+    if(!!winner) {
+        let playAgain = confirm("Want to play again?")
+        if(playAgain) playAgain()
+    }
+
+    if(squareTo.content.piece == 'king') {
+        
+
+    }
+}
+
 /**
  * Release a chess piece to a square
  * @returns {void}
  */
 function releasePiece($event, toSquare) {
-    if(!toSquare.isPossibleMove) return
+    let fromSquare = squares[holding.row][holding.col]
+    if(!toSquare.isPossibleMove) {
+        isHoldingChessPiece.value = null 
+        fromSquare.visible = true
+        return clearPossibleMoves()
+    }
+
+    isCheckmate(toSquare)
 
     console.log('release from ', squares[holding.row][holding.col])
     console.log('to ', toSquare)
 
-    let fromSquare = squares[holding.row][holding.col]
 
     toSquare.content.piece = fromSquare.content.piece
     toSquare.content.color = fromSquare.content.color
@@ -425,6 +457,12 @@ function clearPossibleMoves() {
 function squareMouseLeave($event, square) {
     document.body.style.cursor = 'initial'
     if(!isHoldingChessPiece.value) clearPossibleMoves()
+}
+
+/**
+ * Cancel current turn move
+ */
+function cancelTurn(squareTo) {
 }
 
 /**
