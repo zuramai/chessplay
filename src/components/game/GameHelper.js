@@ -79,5 +79,27 @@ export default {
             'H7': 'pawn',
         }        
         return contentMapping[squareCode]
-    }
+    },
+
+    /**
+     * Get knight possible moves indexes
+     * @param {Number} squareRowIndex 
+     * @param {Number} squareColIndex 
+     * @returns 
+     */
+    getKnightPossibleMoves(squareRowIndex, squareColIndex) {
+        return [
+            {rowIndex: squareRowIndex - 2, colIndex: squareColIndex + 1},
+            {rowIndex: squareRowIndex - 2, colIndex: squareColIndex - 1},
+            {rowIndex: squareRowIndex + 2, colIndex: squareColIndex + 1},
+            {rowIndex: squareRowIndex + 2, colIndex: squareColIndex - 1},
+    
+            {rowIndex: squareRowIndex - 1, colIndex: squareColIndex + 2},
+            {rowIndex: squareRowIndex - 1, colIndex: squareColIndex - 2},
+            {rowIndex: squareRowIndex + 1, colIndex: squareColIndex + 2},
+            {rowIndex: squareRowIndex + 1, colIndex: squareColIndex - 2},
+        ]
+    },
+
+  
 }
