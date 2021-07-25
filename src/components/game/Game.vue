@@ -79,7 +79,7 @@
 <script setup>
 import { computed, onMounted, reactive, ref, toRefs } from "vue";
 import { useStore } from "vuex";
-import helper from "./GameHelper.vue";
+import helper from "./GameHelper";
 import Piece from "./Piece.vue";
 
 const store = useStore();
