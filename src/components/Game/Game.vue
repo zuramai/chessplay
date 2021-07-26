@@ -61,10 +61,6 @@
             </g>
           </g>
         </g>
-        <g class="notations">
-            <text class="notation" x="20" :y="15+110*i" v-for="i in 8" :key="i">{{9-i}}</text>
-            <text class="notation" :x="110+110*n" :y="viewbox.y-20" v-for="(i,n) in ['A','B','C','D','E','F','G','H']" :key="i">{{i}}</text>
-        </g>
         <g class="holding-piece">
           <Piece
             v-if="isHoldingChessPiece"

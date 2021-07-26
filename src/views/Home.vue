@@ -13,6 +13,6 @@
     </div>
 </template>
 <script setup>
-import Game from "@/components/game/Game.vue"
-import GameStats from "@/components/game/GameStats.vue"
+import Game from "@/components/Game/Game.vue";
+import GameStats from "@/components/Game/GameStats.vue";
 </script>
