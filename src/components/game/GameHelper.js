@@ -120,4 +120,35 @@ export default {
       { targetRow: squareRowIndex - 1, targetCol: squareColIndex - 1 },
     ];
   },
+
+  /**
+   * Convert object to chess move notations
+   * @param {Object} move
+   * @returns String
+   */
+  notationsFromObject(move) {
+    if (!Object.keys(move).length) return "";
+
+    let pieceNotationMapping = {
+      king: "K",
+      queen: "Q",
+      bishop: "B",
+      rook: "R",
+      knight: "N",
+      pawn: "",
+    };
+    console.log("piece notation: ", pieceNotationMapping[move.piece]);
+
+    let fromKey = move.from.toLowerCase();
+    let toKey = move.to.toLowerCase();
+
+    if (fromKey[0] == toKey[0]) fromKey = fromKey.substr(1, 2);
+    if (fromKey[1] == toKey[1]) fromKey = fromKey.substr(0, 1);
+
+    return (
+      pieceNotationMapping[move.piece] +
+      fromKey.toLowerCase() +
+      toKey.toLowerCase()
+    );
+  },
 };

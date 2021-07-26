@@ -6,6 +6,23 @@ export default {
     state.movesHistory.push(val);
   },
   RESET_MOVES_HISTORY(state) {
-    state.movesHistory = [];
+    state.movesHistory = [
+      {
+        black: {},
+        white: {},
+      },
+    ];
+  },
+  ADD_MOVE_HISTORY(state, move) {
+    let lastMove = state.movesHistory[state.movesHistory.length - 1];
+    if (Object.keys(lastMove[move.color]).length) {
+      lastMove = {
+        black: {},
+        white: {},
+      };
+      state.movesHistory.push(lastMove);
+    }
+
+    lastMove[move.color] = move;
   },
 };

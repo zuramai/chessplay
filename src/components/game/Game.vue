@@ -2,8 +2,8 @@
   <div class="game">
     <div class="chessboard | w-full max-h-0">
       <svg
-        :viewBox="`0 0 ${viewbox.x} ${viewbox.y}`"
         ref="svg"
+        :viewBox="`0 0 ${viewbox.x} ${viewbox.y}`"
         @mousemove="onMouseMove"
       >
         <!-- Base Color -->
@@ -18,22 +18,22 @@
         <!-- Square group -->
         <g class="squares">
           <g
-            class="square-row"
             v-for="(squareRow, squareRowIndex) in squares"
             :key="squareRowIndex"
+            class="square-row"
           >
             <g
-              @click="squareClick($event, squareRowIndex, squareColIndex)"
-              :class="{ square: true, [`square-${square.code}`]: true }"
               v-for="(square, squareColIndex) in squareRow"
+              :key="square.code"
+              :ref="square.code"
+              :class="{ square: true, [`square-${square.code}`]: true }"
+              @click="squareClick($event, squareRowIndex, squareColIndex)"
               @mouseenter="
                 squareMouseEnter($event, squareRowIndex, squareColIndex)
               "
               @mouseleave="
                 squareMouseLeave($event, squareRowIndex, squareColIndex)
               "
-              :key="square.code"
-              :ref="square.code"
             >
               <rect
                 :x="square.x"
@@ -49,9 +49,9 @@
               <g v-if="square.content.piece">
                 <Piece
                   v-show="square.visible"
+                  :key="square.code"
                   :name="square.content.piece"
                   :x="square.content.x"
-                  :key="square.code"
                   :y="square.content.y + 10"
                   :width="square.content.width"
                   :height="square.content.height"
@@ -62,8 +62,24 @@
           </g>
         </g>
         <g class="notations">
-            <text class="notation" x="20" :y="15+110*i" v-for="i in 8" :key="i">{{9-i}}</text>
-            <text class="notation" :x="110+110*n" :y="viewbox.y-20" v-for="(i,n) in ['A','B','C','D','E','F','G','H']" :key="i">{{i}}</text>
+          <text
+            v-for="i in 8"
+            :key="i"
+            class="notation"
+            x="20"
+            :y="15 + 110 * i"
+          >
+            {{ 9 - i }}
+          </text>
+          <text
+            v-for="(i, n) in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']"
+            :key="i"
+            class="notation"
+            :x="110 + 110 * n"
+            :y="viewbox.y - 20"
+          >
+            {{ i }}
+          </text>
         </g>
         <g class="holding-piece">
           <Piece
@@ -83,12 +99,13 @@
 <script setup>
 import { computed, onMounted, reactive, ref, toRefs } from "vue";
 import { useStore } from "vuex";
-import helper from "./GameHelper";
-import Piece from "./Piece.vue";
+import helper from "@/components/Game/GameHelper";
+import Piece from "@/components/Game/Piece.vue";
 
 const store = useStore();
 
 const viewbox = { x: 1000, y: 1000 };
+/*eslint no-unused-vars: "off"*/
 let playerColor = ref("white");
 let turn = computed({
   set(val) {
@@ -104,6 +121,7 @@ let squares = reactive([]);
 let possibleMoves = reactive([]);
 let svg = ref(null);
 
+/*eslint no-undef: "off"*/
 const props = defineProps({
   boardSettings: {
     required: false,
@@ -174,6 +192,7 @@ let holding = reactive({ row: null, col: null });
  * @returns {void}
  */
 function squareClick($event, rowIndex, colIndex) {
+  /*eslint no-unused-vars: "off"*/
   let square = squares[rowIndex][colIndex];
   if (isHoldingChessPiece.value) {
     // If user is holding a chess piece, then release it.
@@ -187,6 +206,7 @@ function squareClick($event, rowIndex, colIndex) {
   console.log(isHoldingChessPiece.value);
 }
 
+/*eslint no-unused-vars: "off"*/
 function playAgain() {
   initSquares();
   turn.value = "white";
@@ -207,13 +227,22 @@ function isCheckmate(squareTo) {
     alert(`${winner} win!`);
   }
 
-  if (!!winner) {
+  if (winner) {
     let playAgain = confirm("Want to play again?");
     if (playAgain) playAgain();
   }
 
-  if (squareTo.content.piece == "king") {
-  }
+  // if (squareTo.content.piece == "king") {
+  // }
+}
+
+function addMoveHistory(fromSquare, toSquare) {
+  store.commit("ADD_MOVE_HISTORY", {
+    color: fromSquare.content.color,
+    from: fromSquare.code,
+    to: toSquare.code,
+    piece: fromSquare.content.piece,
+  });
 }
 
 /**
@@ -228,6 +257,7 @@ function releasePiece($event, toSquare) {
     return clearPossibleMoves();
   }
 
+  addMoveHistory(fromSquare, toSquare);
   isCheckmate(toSquare);
 
   console.log("release from ", squares[holding.row][holding.col]);
@@ -451,6 +481,7 @@ function knightPossibleMoves(squareRowIndex, squareColIndex) {
  * @returns {void}
  */
 function bishopPossibleMoves(squareRowIndex, squareColIndex) {
+  /*eslint no-unused-vars: "off"*/
   let square = squares[squareRowIndex][squareColIndex];
 
   let moveTargets = [];
@@ -512,6 +543,7 @@ const possibleMovesMapping = {
  * @returns {void}
  */
 function showPossibleMoves(squareRowIndex, squareColIndex) {
+  /*eslint no-unused-vars: "off"*/
   let square = squares[squareRowIndex][squareColIndex];
   return possibleMovesMapping[square.content.piece](
     squareRowIndex,
@@ -581,5 +613,9 @@ onMounted(() => {
 }
 .holding-piece {
   pointer-events: none;
+}
+.notation {
+  fill: #ccc;
+  font-size: 1.5rem;
 }
 </style>
