@@ -9,6 +9,3 @@ dist-ssr
 
 .idea/
 .vscode/
-
-# since this repo depending on npm
-yarn.lock
