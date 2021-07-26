@@ -3,3 +3,12 @@ node_modules
 dist
 dist-ssr
 *.local
+
+# ESLint
+.eslintcache
+
+.idea/
+.vscode/
+
+# since this repo depending on npm
+yarn.lock
