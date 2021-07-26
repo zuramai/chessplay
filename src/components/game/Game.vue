@@ -4,7 +4,7 @@
             <svg :viewBox="`0 0 ${viewbox.x} ${viewbox.y}`" ref="svg" @mousemove="onMouseMove">
                 <!-- Base Color -->
                 <rect x="0" y="0" :width="viewbox.x" :height="viewbox.y" :fill="boardSettings.baseColor"></rect>
-
+                
                 <!-- Square group -->
                 <g class="squares">
                     <g class="square-row"  v-for="(squareRow,squareRowIndex) in squares" :key="squareRowIndex">
@@ -34,6 +34,10 @@
                             </g>
                         </g>
                     </g>
+                </g>
+                <g class="notations">
+                    <text class="notation" x="20" :y="15+110*i" v-for="i in 8" :key="i">{{9-i}}</text>
+                    <text class="notation" :x="110+110*n" :y="viewbox.y-20" v-for="(i,n) in ['A','B','C','D','E','F','G','H']" :key="i">{{i}}</text>
                 </g>
                 <g class="holding-piece">
                     <Piece v-if="isHoldingChessPiece"
@@ -243,6 +247,7 @@ function pawnPossibleMoves(squareRowIndex, squareColIndex) {
     if(square.content.color == 'white') stepForward *= -1
 
     let nextSquare
+    let possibleMoves = []
 
     let i = 0;
     do {
@@ -251,22 +256,25 @@ function pawnPossibleMoves(squareRowIndex, squareColIndex) {
         nextSquare = squares[squareRowIndex+i][squareColIndex]
         // console.log('pawn possible moves', nextSquare)
         if(nextSquare.content.piece) break
-        makeItPossible(nextSquare)
+
+        possibleMoves.push({rowIndex: squareRowIndex+i, colIndex: squareColIndex})
     }while(i !== stepForward)
 
     // check for topleft and topright
     if(square.content.color == 'white') {
         nextSquare = squares[squareRowIndex-1][squareColIndex-1]
-        if(nextSquare && nextSquare.content.piece && nextSquare.content.color == 'black') makeItPossible(nextSquare)
+        if(nextSquare && nextSquare.content.piece && nextSquare.content.color == 'black') possibleMoves.push({rowIndex: squareRowIndex-1, colIndex: squareColIndex-1})
         nextSquare = squares[squareRowIndex-1][squareColIndex+1]
-        if(nextSquare && nextSquare.content.piece && nextSquare.content.color == 'black') makeItPossible(nextSquare)
+        if(nextSquare && nextSquare.content.piece && nextSquare.content.color == 'black') possibleMoves.push({rowIndex: squareRowIndex-1, colIndex: squareColIndex+1})
     }
     else if(square.content.color == 'black') {
         nextSquare = squares[squareRowIndex+1][squareColIndex-1]
-        if(nextSquare && nextSquare.content.piece && nextSquare.content.color == 'white') makeItPossible(nextSquare)
+        if(nextSquare && nextSquare.content.piece && nextSquare.content.color == 'white') possibleMoves.push({rowIndex: squareRowIndex+1, colIndex: squareColIndex-1})
         nextSquare = squares[squareRowIndex+1][squareColIndex+1]
-        if(nextSquare && nextSquare.content.piece && nextSquare.content.color == 'white') makeItPossible(nextSquare)
+        if(nextSquare && nextSquare.content.piece && nextSquare.content.color == 'white') possibleMoves.push({rowIndex: squareRowIndex+1, colIndex: squareColIndex+1})
     }
+    possibleMoves.forEach(m => makeItPossible(squares[m.rowIndex][m.colIndex]))
+    return possibleMoves
 }
 
 /**
@@ -315,6 +323,7 @@ function rookPossibleMoves(squareRowIndex, squareColIndex) {
         if(targetSquare.content.piece && targetSquare.content.color == turn.value) return
         else makeItPossible(targetSquare)
     })
+    return moveTargets
 }
 
 /**
@@ -327,16 +336,16 @@ function kingPossibleMoves(squareRowIndex, squareColIndex) {
     let possibleMovesIndex = helper.getKingPossibleMoves(squareRowIndex,squareColIndex)
 
     possibleMovesIndex.forEach(possible => {
-        let { targetRow, targetCol } = possible
+        let { rowIndex, colIndex } = possible
 
-        if(targetRow < 0 || targetCol < 0 || targetRow > 7 || targetCol > 7) return
+        if(rowIndex < 0 || colIndex < 0 || rowIndex > 7 || colIndex > 7) return
 
-        let square = squares[targetRow][targetCol]
+        let square = squares[rowIndex][colIndex]
 
         if(square.content.color == turn.value) return
         else if(!square.content.color || square.content.color == oppositeTurn.value) makeItPossible(square)
-        
     })
+    return possibleMovesIndex
 }
 
 /**
@@ -368,6 +377,8 @@ function knightPossibleMoves(squareRowIndex, squareColIndex) {
         if(targetSquare.content.piece && targetSquare.content.color == turn.value) return
         else makeItPossible(targetSquare)
     })
+
+    return moveTargets
 }
 
 /**
@@ -417,6 +428,8 @@ function bishopPossibleMoves(squareRowIndex, squareColIndex) {
         if(targetSquare.content.piece && targetSquare.content.color == turn.value) return
         else makeItPossible(targetSquare)
     })
+
+    return moveTargets
 }
 
 const possibleMovesMapping = {
@@ -498,5 +511,11 @@ onMounted(() => {
     }
     .holding-piece {
         pointer-events: none;
+    }
+    .notations {
+        .notation {
+            font-size: 2rem;
+            fill: rgb(195, 195, 195);
+        }
     }
 </style>

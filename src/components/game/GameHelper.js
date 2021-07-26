@@ -109,16 +109,16 @@ export default {
      */
     getKingPossibleMoves(squareRowIndex, squareColIndex) {
         return [
-            {targetRow: squareRowIndex+1, targetCol: squareColIndex},
-            {targetRow: squareRowIndex-1, targetCol: squareColIndex},
-            {targetRow: squareRowIndex, targetCol: squareColIndex+1},
-            {targetRow: squareRowIndex, targetCol: squareColIndex-1},
+            {rowIndex: squareRowIndex+1, colIndex: squareColIndex},
+            {rowIndex: squareRowIndex-1, colIndex: squareColIndex},
+            {rowIndex: squareRowIndex, colIndex: squareColIndex+1},
+            {rowIndex: squareRowIndex, colIndex: squareColIndex-1},
             
             // diagonal
-            {targetRow: squareRowIndex+1, targetCol: squareColIndex+1},
-            {targetRow: squareRowIndex+1, targetCol: squareColIndex-1},
-            {targetRow: squareRowIndex-1, targetCol: squareColIndex+1},
-            {targetRow: squareRowIndex-1, targetCol: squareColIndex-1},
+            {rowIndex: squareRowIndex+1, colIndex: squareColIndex+1},
+            {rowIndex: squareRowIndex+1, colIndex: squareColIndex-1},
+            {rowIndex: squareRowIndex-1, colIndex: squareColIndex+1},
+            {rowIndex: squareRowIndex-1, colIndex: squareColIndex-1},
         ]
     }
 
