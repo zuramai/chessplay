@@ -5,7 +5,7 @@ export default {
   PUSH_MOVES_HISTORY(state, val) {
     state.movesHistory.push(val);
   },
-  RESET_MOVES_HISTORY(state) {
+  RESET_MOVES_HISTORY(state, val) {
     state.movesHistory = [];
   },
 };

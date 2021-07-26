@@ -106,7 +106,6 @@
   </g>
 </template>
 <script setup>
-/*eslint no-undef: "off"*/
 const props = defineProps({
   color: {
     type: String,
