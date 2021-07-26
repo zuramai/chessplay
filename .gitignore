@@ -3,3 +3,9 @@ node_modules
 dist
 dist-ssr
 *.local
+
+# ESLint
+.eslintcache
+
+.idea/
+.vscode/
