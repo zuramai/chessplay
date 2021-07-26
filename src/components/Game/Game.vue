@@ -2,8 +2,8 @@
   <div class="game">
     <div class="chessboard | w-full max-h-0">
       <svg
-        ref="svg"
         :viewBox="`0 0 ${viewbox.x} ${viewbox.y}`"
+        ref="svg"
         @mousemove="onMouseMove"
       >
         <!-- Base Color -->
@@ -18,22 +18,22 @@
         <!-- Square group -->
         <g class="squares">
           <g
+            class="square-row"
             v-for="(squareRow, squareRowIndex) in squares"
             :key="squareRowIndex"
-            class="square-row"
           >
             <g
-              v-for="(square, squareColIndex) in squareRow"
-              :key="square.code"
-              :ref="square.code"
-              :class="{ square: true, [`square-${square.code}`]: true }"
               @click="squareClick($event, squareRowIndex, squareColIndex)"
+              :class="{ square: true, [`square-${square.code}`]: true }"
+              v-for="(square, squareColIndex) in squareRow"
               @mouseenter="
                 squareMouseEnter($event, squareRowIndex, squareColIndex)
               "
               @mouseleave="
                 squareMouseLeave($event, squareRowIndex, squareColIndex)
               "
+              :key="square.code"
+              :ref="square.code"
             >
               <rect
                 :x="square.x"
@@ -49,9 +49,9 @@
               <g v-if="square.content.piece">
                 <Piece
                   v-show="square.visible"
-                  :key="square.code"
                   :name="square.content.piece"
                   :x="square.content.x"
+                  :key="square.code"
                   :y="square.content.y + 10"
                   :width="square.content.width"
                   :height="square.content.height"
@@ -85,7 +85,6 @@ import Piece from "./Piece.vue";
 const store = useStore();
 
 const viewbox = { x: 1000, y: 1000 };
-/*eslint no-unused-vars: "off"*/
 let playerColor = ref("white");
 let turn = computed({
   set(val) {
@@ -101,7 +100,6 @@ let squares = reactive([]);
 let possibleMoves = reactive([]);
 let svg = ref(null);
 
-/*eslint no-undef: "off"*/
 const props = defineProps({
   boardSettings: {
     required: false,
@@ -172,7 +170,6 @@ let holding = reactive({ row: null, col: null });
  * @returns {void}
  */
 function squareClick($event, rowIndex, colIndex) {
-  /*eslint no-unused-vars: "off"*/
   let square = squares[rowIndex][colIndex];
   if (isHoldingChessPiece.value) {
     // If user is holding a chess piece, then release it.
@@ -186,7 +183,6 @@ function squareClick($event, rowIndex, colIndex) {
   console.log(isHoldingChessPiece.value);
 }
 
-/*eslint no-unused-vars: "off"*/
 function playAgain() {
   initSquares();
   turn.value = "white";
@@ -207,13 +203,13 @@ function isCheckmate(squareTo) {
     alert(`${winner} win!`);
   }
 
-  if (winner) {
+  if (!!winner) {
     let playAgain = confirm("Want to play again?");
     if (playAgain) playAgain();
   }
 
-  // if (squareTo.content.piece == "king") {
-  // }
+  if (squareTo.content.piece == "king") {
+  }
 }
 
 /**
@@ -451,7 +447,6 @@ function knightPossibleMoves(squareRowIndex, squareColIndex) {
  * @returns {void}
  */
 function bishopPossibleMoves(squareRowIndex, squareColIndex) {
-  /*eslint no-unused-vars: "off"*/
   let square = squares[squareRowIndex][squareColIndex];
 
   let moveTargets = [];
@@ -513,7 +508,6 @@ const possibleMovesMapping = {
  * @returns {void}
  */
 function showPossibleMoves(squareRowIndex, squareColIndex) {
-  /*eslint no-unused-vars: "off"*/
   let square = squares[squareRowIndex][squareColIndex];
   return possibleMovesMapping[square.content.piece](
     squareRowIndex,
