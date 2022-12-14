@@ -9,7 +9,7 @@ export default defineConfig({
   plugins: [vue(), WindiCSS(), eslintPlugin()],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "/src"),
+      "@": path.resolve(__dirname, "./src"),
     },
   },
   server: {
